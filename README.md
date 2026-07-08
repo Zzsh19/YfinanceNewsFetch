@@ -1,0 +1,2 @@
+# YfinanceNewsFetch
+Personalized YfinanceDataFetchAPP
