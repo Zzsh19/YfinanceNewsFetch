@@ -257,6 +257,8 @@
     return 'neutral';
   }
 
+  const TAPE_PX_PER_SEC = 90; // constant visual speed, independent of content length
+
   function renderTape(articles){
     if(!articles.length) return;
     const build = () => articles.map(a => {
@@ -266,6 +268,13 @@
     }).join('');
     // duplicate content so the 50%-translate loop is seamless
     tapeTrack.innerHTML = build() + build();
+ 
+    // Duration must scale with content width so px/sec stays constant no
+    // matter how many tickers/articles are loaded (more content used to
+    // mean the same 60s loop covered more pixels, i.e. felt faster).
+    const singleSetWidth = tapeTrack.scrollWidth / 2;
+    const duration = Math.max(singleSetWidth / TAPE_PX_PER_SEC, 8); // floor so tiny feeds don't whip by
+    tapeTrack.style.animationDuration = duration + 's';
   }
 
   function renderFeed(articles){
